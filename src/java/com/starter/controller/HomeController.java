@@ -22,10 +22,20 @@ public class HomeController {
     public String index() {
         return "index";
     }
-    
     @RequestMapping("/login.htm")
     public String login() {
         return "login";
+    }
+    /**
+     * 
+     */
+    @RequestMapping("/register.htm")
+    public String register() {
+        return "register";
+    }
+    @RequestMapping("/profile.htm")
+    public String profile() {
+        return "profile";
     }
     
     @RequestMapping("/home.htm")
