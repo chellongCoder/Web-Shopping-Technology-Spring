@@ -40,36 +40,36 @@
             <div class="login-register" style="background-image:url(${pageContext.request.contextPath}/public/images/shopping.jpg);">
                 <div class="login-box card">
                     <div class="card-body">
-                        <form class="form-horizontal form-material" id="loginform" action="index.html">
+                        <form class="form-horizontal form-material" id="loginform" action="handleRegister.htm">
                             <h3 class="box-title m-b-20">Sign Up</h3>
                             <div class="form-group">
                                 <div class="col-xs-12">
-                                    <input id="name" class="form-control" type="text" required="" placeholder="Name">
+                                    <input id="name" name="name" class="form-control" type="text" required="" placeholder="Name">
                                     <span id="error_name" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="form-group ">
                                 <div class="col-xs-12">
-                                    <input id="email" class="form-control" type="text" required="" placeholder="Email">
+                                    <input id="email" name="email" class="form-control" type="text" required="" placeholder="Email">
                                     <span id="error_email" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="form-group ">
                                 <div class="col-xs-12">
-                                    <input id="password" class="form-control" type="password" required="" placeholder="Password">
+                                    <input id="password" name="password" class="form-control" type="password" required="" placeholder="Password">
                                     <span id="error_password" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-xs-12">
-                                    <input id="confirm" class="form-control" type="password" required="" placeholder="Confirm Password">
+                                    <input id="confirm" name="comfirm" class="form-control" type="password" required="" placeholder="Confirm Password">
                                     <span id="error_confirm" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-12">
                                     <div class="checkbox ">
-                                        <input id="checkbox-signup" type="checkbox">
+                                        <input name="checkbox-signup" id="checkbox-signup" type="checkbox">
                                         <label for="checkbox-signup"> I agree to all <a href="#">Terms</a></label>
                                         <span id="error_term" class="text-danger"></span>
                                     </div>
