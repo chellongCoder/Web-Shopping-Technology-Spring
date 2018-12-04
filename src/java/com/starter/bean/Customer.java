@@ -5,11 +5,14 @@
  */
 package com.starter.bean;
 
+import java.io.Serializable;
+
 /**
  *
  * @author chellong
  */
-public class Customer {
+public class Customer implements Serializable, Cloneable{
+
     private int idCustomer;
     private String username;
     private String email;
@@ -22,126 +25,132 @@ public class Customer {
     private String about;
     private String typeCustomer;
 
-    public Customer() {
-        this.idCustomer = 0;
-        this.username = "";
-        this.email = "";
-        this.password = "";
-        this.name = "";
-        this.address = "";
-        this.city = "";
-        this.country = "";
-        this.postcode = 0;
-        this.about = "";
-        this.typeCustomer = "";
-
-    }
-
-    public Customer(int idCustomer, String username, String email, String password, String name, String address, String city, String country, int postcode, String about, String typeCustomer) {
-        this.idCustomer = idCustomer;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.address = address;
-        this.city = city;
-        this.country = country;
-        this.postcode = postcode;
-        this.about = about;
-        this.typeCustomer = typeCustomer;
+    public Customer(CustomerBuilder builder) {
+        this.idCustomer = builder.idCustomer;
+        this.username = builder.username;
+        this.email = builder.email;
+        this.password = builder.password;
+        this.name = builder.name;
+        this.address = builder.address;
+        this.city = builder.city;
+        this.country = builder.country;
+        this.postcode = builder.postcode;
+        this.about = builder.about;
+        this.typeCustomer = builder.typeCustomer;
     }
 
     public int getIdCustomer() {
         return idCustomer;
     }
 
-    public void setIdCustomer(int idCustomer) {
-        this.idCustomer = idCustomer;
-    }
-
     public String getUsername() {
         return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getPassword() {
         return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getAddress() {
         return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public String getCity() {
         return city;
     }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
-
     public String getCountry() {
         return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
     }
 
     public int getPostcode() {
         return postcode;
     }
 
-    public void setPostcode(int postcode) {
-        this.postcode = postcode;
-    }
-
     public String getAbout() {
         return about;
-    }
-
-    public void setAbout(String about) {
-        this.about = about;
     }
 
     public String getTypeCustomer() {
         return typeCustomer;
     }
 
-    public void setTypeCustomer(String typeCustomer) {
-        this.typeCustomer = typeCustomer;
-    }
-
     @Override
     public String toString() {
         return "Customer{" + "email=" + email + ", password=" + password + ", name=" + name + '}';
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return new Customer.CustomerBuilder(this.email, this.password, this.name).build();
+    }
+    
+    
+
+    public static class CustomerBuilder {
+
+        private int idCustomer;
+        private String username;
+        private String email;
+        private String password;
+        private String name;
+        private String address;
+        private String city;
+        private String country;
+        private int postcode;
+        private String about;
+        private String typeCustomer;
+
+        public CustomerBuilder(String email, String password, String name) {
+            this.email = email;
+            this.password = password;
+            this.name = name;
+        }
+
+        public void setIdCustomer(int idCustomer) {
+            this.idCustomer = idCustomer;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        public void setCity(String city) {
+            this.city = city;
+        }
+
+        public void setCountry(String country) {
+            this.country = country;
+        }
+
+        public void setPostcode(int postcode) {
+            this.postcode = postcode;
+        }
+
+        public void setAbout(String about) {
+            this.about = about;
+        }
+
+        public void setTypeCustomer(String typeCustomer) {
+            this.typeCustomer = typeCustomer;
+        }
+        
+        public Customer build () {
+            return new Customer(this);
+        }
+
     }
 
 }

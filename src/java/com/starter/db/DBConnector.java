@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
@@ -18,7 +19,7 @@ public class DBConnector {
     
     final static String SERVER  = "125.212.227.42";
     final static String PORT    = "3336";
-    final static String DB_NAME = "ManTel";
+    final static String DB_NAME = "TechnologyShopping-JavaWeb02";
     final static String DB_USER = "root";
     final static String DB_PASS = "toor";
     
@@ -32,8 +33,14 @@ public class DBConnector {
     
     public static void main(String[] args) {
         try {
-            Connection conn = getConnection();
-            if(conn!=null) System.out.println("ok");
+            String hashpw = BCrypt.hashpw("long", BCrypt.gensalt(4));
+            System.out.println("hash " + hashpw);
+            
+            if(BCrypt.checkpw("longvip98", "$2a$04$CCJpgECV/XeX9JX.v3vrEuZzBt0ORV.w.4a2fOYksByk9KquajClq")) {
+                System.out.println("ok");
+            }
+//            Connection conn = getConnection();
+//            if(conn!=null) System.out.println("ok");
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -42,9 +42,17 @@
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/util.css">
         <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/main.css">
         <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/public/css/jquery.toolbar.css"/>
     </head>
+    <style>
+        .tooltip-user {
+            background-color: red
+        }
+    </style>
     <body class="animsition">
-
+        <c:if test="${LoginInfo == null}">
+            <c:redirect url="login.htm"/>
+        </c:if>
         <!-- header fixed -->
         <div class="wrap_header fixed-header2 trans-0-4">
             <!-- Logo -->
@@ -212,7 +220,7 @@
 
                 <div class="topbar-child2">
                     <span class="topbar-email">
-                        fashe@example.com
+                        fashe@example.com 
                     </span>
 
                     <div class="topbar-language rs1-select2">
@@ -221,12 +229,16 @@
                             <option>EUR</option>
                         </select>
                     </div>
+                    <!--                    <div id="toolbar-options" class="hidden ">
+                                            <div class="d-flex flex-column tooltip-user">
+                                                <a id="user-info" href="https://www.facebook.com/"><i class="fa fa-plane"></i></a>
+                                                <a href="profile.htm"><i class="fa fa-car"></i></a>
+                                            </div>
+                                        </div>-->
 
-                    <!--  -->
-                    <a href="#" class="header-wrapicon1 dis-block m-l-30">
-                        <img src="${pageContext.request.contextPath}/public/images/icons/icon-header-01.png" class="header-icon1" alt="ICON">
+                    <a href="profile.html" class="header-wrapicon1 dis-block m-l-30">
+                        <img id="user" src="${pageContext.request.contextPath}/public/images/icons/icon-header-01.png" class="header-icon1" alt="ICON">
                     </a>
-
                     <span class="linedivide1"></span>
 
                     <div class="header-wrapicon2 m-r-13">
@@ -305,6 +317,9 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div>
+                        <a href="logout.htm">Logout</a>
                     </div>
                 </div>
             </div>
@@ -483,6 +498,9 @@
                                     <option>USD</option>
                                     <option>EUR</option>
                                 </select>
+                            </div>
+                            <div>
+                                <a href="logout.htm">Logout</a>
                             </div>
                         </div>
                     </li>
@@ -2071,9 +2089,22 @@
             </div>
         </div>
     </div>
-
     <!--===============================================================================================-->
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="${pageContext.request.contextPath}/public/js/jquery.toolbar.js"></script>     
+    <script type="text/javascript">
+        $('#user').toolbar({
+            content: '#toolbar-options',
+            position: 'bottom',
+            style: 'primary',
+            animation: 'flip'
+        });
+        $('user-info').click(function () {
+            console.log("ok");
+        });
+    </script>
+
     <!--===============================================================================================-->
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/vendor/animsition/js/animsition.min.js"></script>
     <!--===============================================================================================-->
@@ -2086,6 +2117,7 @@
             minimumResultsForSearch: 20,
             dropdownParent: $('#dropDownSelect1')
         });
+
     </script>
     <!--===============================================================================================-->
     <script type="text/javascript" src="${pageContext.request.contextPath}/public/vendor/slick/slick.min.js"></script>
@@ -2110,6 +2142,8 @@
                 swal(nameProduct, "is added to wishlist !", "success");
             });
         });
+
+
     </script>
 
     <!--===============================================================================================-->

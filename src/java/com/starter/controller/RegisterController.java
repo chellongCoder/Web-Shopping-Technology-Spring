@@ -5,6 +5,10 @@
  */
 package com.starter.controller;
 
+import com.starter.bean.Customer;
+import com.starter.model.CustomerModel;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,8 +19,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  *
  * @author chellong
  */
+ enum STATUS {
+   SUCCESS, FAILURE
+}
 @Controller
 public class RegisterController {
+
     /**
      * @TODO:
      */
@@ -26,16 +34,23 @@ public class RegisterController {
     }
 
     @RequestMapping("/handleRegister.htm")
-    public String handleRegister(ModelMap model, 
+    public String handleRegister(ModelMap model,
             RedirectAttributes ra,
-            @RequestParam("name") String name, 
-            @RequestParam("email") String email, 
-            @RequestParam("password") String password, 
+            @RequestParam("name") String name,
+            @RequestParam("email") String email,
+            @RequestParam("password") String password,
             @RequestParam("checkbox-signup") String checkbox) {
-        System.out.println("============================");
-        System.out.println("name " + name + "email " + email + "password " + password + "checkbox " + checkbox);
-        System.out.println("============================");
-        ra.addFlashAttribute("register", "success");
-        return "redirect:/login.htm";
+        try {
+            System.out.println("============================");
+            System.out.println("name " + name + "email " + email + "password " + password + "checkbox " + checkbox);
+            Customer cus = new Customer.CustomerBuilder(email, password, name).build();
+            CustomerModel.add(cus);
+        } catch (Exception ex) {
+            ra.addFlashAttribute("register", STATUS.FAILURE);
+            ex.printStackTrace();
+        }
+        ra.addFlashAttribute("register", STATUS.SUCCESS);
+        return "redirect:/redirectLogin.htm";
+
     }
 }

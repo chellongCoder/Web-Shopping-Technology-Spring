@@ -26,6 +26,9 @@
     </head>
 
     <body>
+         <c:if test="${LoginInfo!=null}">
+            <c:redirect url="index.htm"/>
+        </c:if>
         <!-- ============================================================== -->
         <!-- Preloader - style you can find in spinners.css -->
         <!-- ============================================================== -->
