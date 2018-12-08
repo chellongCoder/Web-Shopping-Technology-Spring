@@ -24,12 +24,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 }
 @Controller
 public class RegisterController {
-
+    CustomerModel customerModel = null;
     /**
      * @TODO:
      */
     @RequestMapping("/register.htm")
     public String register() {
+        customerModel = new CustomerModel();
         return "register";
     }
 
@@ -44,7 +45,7 @@ public class RegisterController {
             System.out.println("============================");
             System.out.println("name " + name + "email " + email + "password " + password + "checkbox " + checkbox);
             Customer cus = new Customer.CustomerBuilder(email, password, name).build();
-            CustomerModel.add(cus);
+            customerModel.add(cus);
         } catch (Exception ex) {
             ra.addFlashAttribute("register", STATUS.FAILURE);
             ex.printStackTrace();

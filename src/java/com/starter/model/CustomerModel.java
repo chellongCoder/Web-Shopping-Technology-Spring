@@ -11,16 +11,19 @@ import com.starter.db.DBConnector;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.List;
 import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
  * @author chellong
  */
-public class CustomerModel {
+public class CustomerModel implements IModel<Customer> {
     public static final int LOOP_HASH = 4;
     
-    public static int add(Customer cus) throws Exception {
+    @Override
+    public int add(Customer cus) throws Exception {
+        
         System.out.println("====================");
         System.out.println("cus " + cus);
         System.out.println("====================");
@@ -33,6 +36,7 @@ public class CustomerModel {
         pstmt.setString(2, hashPassword);
         pstmt.setString(3, cus.getName());
         return pstmt.executeUpdate();
+        
     }
     
     public static Customer login (String email, String password) throws Exception {
@@ -57,6 +61,26 @@ public class CustomerModel {
     
     public static boolean checkPassword (String password, String hashPassword) {
         return BCrypt.checkpw(password, hashPassword);
+    }
+
+    @Override
+    public List<Customer> getAll() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int update(Customer c) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int delete(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Customer getById(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

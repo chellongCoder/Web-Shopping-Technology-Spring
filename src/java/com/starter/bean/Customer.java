@@ -115,36 +115,45 @@ public class Customer implements Serializable, Cloneable{
             this.name = name;
         }
 
-        public void setIdCustomer(int idCustomer) {
+        public CustomerBuilder setIdCustomer(int idCustomer) {
             this.idCustomer = idCustomer;
+            return this;
         }
 
-        public void setUsername(String username) {
+        public CustomerBuilder setUsername(String username) {
             this.username = username;
+            return this;
+            
         }
 
-        public void setAddress(String address) {
+        public CustomerBuilder setAddress(String address) {
             this.address = address;
+            return this;
         }
 
-        public void setCity(String city) {
+        public CustomerBuilder setCity(String city) {
             this.city = city;
+            return this;
         }
 
-        public void setCountry(String country) {
+        public CustomerBuilder setCountry(String country) {
             this.country = country;
+            return this;
         }
 
-        public void setPostcode(int postcode) {
+        public CustomerBuilder setPostcode(int postcode) {
             this.postcode = postcode;
+            return this;
         }
 
-        public void setAbout(String about) {
+        public CustomerBuilder setAbout(String about) {
             this.about = about;
+            return this;
         }
 
-        public void setTypeCustomer(String typeCustomer) {
+        public CustomerBuilder setTypeCustomer(String typeCustomer) {
             this.typeCustomer = typeCustomer;
+            return this;
         }
         
         public Customer build () {

@@ -38,22 +38,30 @@ public class LoginController {
     }
     
     @RequestMapping(value = "login.htm")
-    public String login (HttpServletRequest request, ModelMap model) {
+    public String login (HttpServletRequest request, ModelMap model) throws Exception {
         HttpSession session = request.getSession(false);
-        System.out.println("====session " + session.getAttribute("LoginInfo"));
+        String email = "";
+        String password = "";
+//        System.out.println("====session " + session.getAttribute("LoginInfo"));
         Cookie[] cookies = request.getCookies();
         System.out.println("suctomer " + this.customer);
         boolean check = false;
         if (cookies != null) {
             for (Cookie cooky : cookies) {
                 System.out.println("Cookie " + cooky.getName() + " " + cooky.getValue());
-                if (cooky.getName().equals("email") && cooky.getName().equals("password")) {
+                if (cooky.getName().equals("email")) {
+                    email = cooky.getValue();
                     check = true;
-                } 
+                } else if (cooky.getName().equals("password")) {
+                    password = cooky.getValue();
+                }
             }
         }
-        if(check && session.getAttribute("LoginInfo")==null) {
-            model.addAttribute("LoginInfo", this.customer);
+        System.out.println("session " + session);
+        if(check && session==null ) {
+            Customer cus = CustomerModel.login(email, password);
+            System.out.println("cus " + cus);
+            model.addAttribute("LoginInfo", cus);
         }
         return "login";
     }
@@ -70,10 +78,10 @@ public class LoginController {
             if(cus!=null) {
                 model.addAttribute("LoginInfo", cus);
                 if(checkbox!=null) {
-                    Cookie userCookie = new Cookie("email", cus.getEmail());
+                    Cookie userCookie = new Cookie("email",email);
                     userCookie.setMaxAge(60 * 60 * 24);
                     response.addCookie(userCookie);
-                    Cookie passCookie = new Cookie("password", cus.getPassword());
+                    Cookie passCookie = new Cookie("password", password);
                     passCookie.setMaxAge(60 * 60 * 24);
                     response.addCookie(passCookie);
                 }
@@ -82,5 +90,10 @@ public class LoginController {
             ex.printStackTrace();
         }
         return "redirect:/index.htm";
+    }
+    
+    @RequestMapping(value = "adminLogin")
+    public String adminLogin () {
+        return "admin/login";
     }
 }
