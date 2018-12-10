@@ -34,11 +34,11 @@ public class Store {
 
     public static class Type {
 
-        static final String ITSHIRT = "IT Shirt";
-        static final String MACBOOK = "Macbook";
-        static final String SMARTPHONE = "Smart Phone";
-        static final String WATCH = "Watch";
-        static final String ACCESSORY = "Accessory";
+        public static final String ITSHIRT = "IT Shirt";
+        public static final String MACBOOK = "Macbook";
+        public static final String SMARTPHONE = "Smart Phone";
+        public static final String WATCH = "Watch";
+        public static final String ACCESSORY = "Accessory";
         private String type;
 
         public Type(String type) {

@@ -22,18 +22,18 @@ import javax.imageio.ImageIO;
 public class TestModel {
 
     static BufferedImage deepCopy(BufferedImage bi, int index) throws IOException {
-        String saveAs = index < 9 ? "java0" + (index + 1) + ".jpg" : "java" + (index + 1) + ".jpg";
+        String saveAs = index < 9 ? "system0" + (index + 1) + ".jpg" : "system" + (index + 1) + ".jpg";
         ColorModel cm = bi.getColorModel();
         boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
         WritableRaster raster = bi.copyData(null);
         BufferedImage cImg = new BufferedImage(cm, raster, isAlphaPremultiplied, null);
-        File saveImage = new File("/Users/chellong/OneDriver/OneDrive - hocvienact.edu.vn/Ao IT/code/javatest", saveAs);
+        File saveImage = new File("/Users/chellong/OneDriver/OneDrive - hocvienact.edu.vn/Ao IT/System/system", saveAs);
         ImageIO.write(cImg, "jpg", saveImage);
         return cImg;
     }
 
     public static void renameFile() throws Exception {
-        String path = "/Users/chellong/OneDriver/OneDrive - hocvienact.edu.vn/Ao IT/code/javatest";
+        String path = "/Users/chellong/OneDriver/OneDrive - hocvienact.edu.vn/Ao IT/System";
         File folder = new File(path);
         File[] listOfFiles = folder.listFiles();
         for (int i = 0; i < listOfFiles.length; i++) {
@@ -49,28 +49,41 @@ public class TestModel {
         }
     }
 
-    public static int add(int i) throws Exception {
+    public static int add(String name) throws Exception {
         Connection conn = DBConnector.getConnection();
         PreparedStatement pstmt = null;
 
         String sql = "INSERT INTO ITEM(idProduct, price, status, urlImage) VALUES(?,?,?,?)";
         pstmt = conn.prepareStatement(sql);
-        pstmt.setInt(1, 1);
-        pstmt.setDouble(2, 1000);
-        pstmt.setString(3, "new");
-        pstmt.setString(4, "http://localhost:54130/SpringStarter/public/images/item" + (i < 9 ? ("0" + i) : i) + ".jpg");
+        pstmt.setInt(1, 4);
+        pstmt.setDouble(2, 2000);
+        pstmt.setString(3, "");
+        pstmt.setString(4, "http://localhost:54130/SpringStarter/public/images/"+name);
 
         return pstmt.executeUpdate();
-
     }
-    static class Runnable1 implements Runnable {
 
+    public static int addMacbook(int i) throws Exception {
+        Connection conn = DBConnector.getConnection();
+        PreparedStatement pstmt = null;
+
+        String sql = "INSERT INTO PRODUCT(idStore, nameProduct, quantity) VALUES(?,?,?)";
+        pstmt = conn.prepareStatement(sql);
+        pstmt.setInt(1, 2);
+        pstmt.setString(2, "Macbook Air " + i);
+        pstmt.setInt(3, 10);
+
+        return pstmt.executeUpdate();
+    }
+
+    static class Runnable1 implements Runnable {
         public void run() {
             for (int i = 1; i <= 1000; i += 2) {
                 System.out.println(i);
             }
         }
     }
+
     static class Runnable2 implements Runnable {
 
         public void run() {
@@ -80,22 +93,28 @@ public class TestModel {
         }
     }
 
-
-
     public static void main(String[] args) {
         try {
-//            for (int i = 1; i <=13 ; i++) {
-//                System.out.println("result " + TestModel.add(i));
-//            }
-//            StoreModel.renameFile();
+            String path = "/Users/chellong/OneDriver/OneDrive - hocvienact.edu.vn/Ao IT/System/system";
+            File folder = new File(path);
+            File[] listOfFiles = folder.listFiles();
+
+            for (int i = 0; i < listOfFiles.length; i++) {
+                System.out.println("result " + TestModel.add(listOfFiles[i].getName()));
+            }
+//            TestModel.renameFile();
 //            Runnable r = new Runnable1();
 //            Thread t = new Thread(r);
 //            Runnable r2 = new Runnable2();
 //            Thread t2 = new Thread(r2);
 //            t.start();
 //            t2.start();
-            int ceil = (int)Math.ceil((double)35/15);
-            System.out.println("ceil " + ceil);
+//            int ceil = (int)Math.ceil((double)35/15);
+//            System.out.println("ceil " + ceil);
+//            for (int i = 2012; i < 2018; i++) {
+//                int addMacbook = TestModel.addMacbook(i);
+//                System.out.println("result " + addMacbook);
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }

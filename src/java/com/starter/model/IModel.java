@@ -5,6 +5,8 @@
  */
 package com.starter.model;
 
+import com.starter.db.DBConnector;
+import java.sql.Connection;
 import java.util.List;
 
 /**
@@ -12,6 +14,8 @@ import java.util.List;
  * @author chellong
  */
 public interface IModel<T> {
+  
+    
     public List<T> getAll () throws Exception;
     public int add(T t) throws Exception;
     public int update(T c);

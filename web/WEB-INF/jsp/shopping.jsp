@@ -74,7 +74,7 @@
                                 </li>
                                 <c:forEach var="item" items="${StoreInfo}">
                                     <li class="p-t-4">
-                                        <a href="selectStore.htm" class="s-text13">
+                                        <a href="selectStore.htm?type=${item.type}" class="s-text13">
                                             ${item.type}
                                         </a>
                                     </li>
@@ -167,11 +167,15 @@
                         <div class="flex-sb-m flex-w p-b-35">
                             <form class="flex-w">
                                 <div class="form-group w-size12 m-t-5 m-b-5 m-r-10">
-                                    <select class="form-control" name="sorting">
-                                        <option>Default Sorting</option>
-                                        <option>Popularity</option>
-                                        <option>Price: low to high</option>
-                                        <option>Price: high to low</option>
+
+                                    <select class="select-product form-control" name="sorting">
+                                        <!--                                        <option>Default Sorting</option>
+                                                                                <option>Popularity</option>
+                                                                                <option>Price: low to high</option>
+                                                                                <option>Price: high to low</option>-->
+                                        <c:forEach items="${typeProducts}" var="item">
+                                            <option>${item.nameProduct}</option>
+                                        </c:forEach>
                                     </select>
                                 </div>
 
@@ -199,7 +203,19 @@
                                 <div class="col-sm-12 col-md-6 col-lg-4 p-b-50">
                                     Block2 
                                     <div class="block2">
-                                        <div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelnew">
+                                        <div class="block2-img wrap-pic-w of-hidden pos-relative">
+                                            <div>
+                                                <c:choose>
+                                                    <c:when test="${item.status=='NEW'}">
+                                                        <div  style="background-color: #138496; opacity: 0.7; border-radius: 20px; padding:5px; position: absolute; top : 5; left : 5; color : white">new</div>
+                                                    </c:when>    
+                                                    <c:otherwise>
+                                                        <div  style="background-color: orangered; opacity: 0.7; border-radius: 20px; padding:5px; position: absolute; top : 5; left : 5; color : white">sale</div>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                                <%--<c:out value="${item.status}"/>--%>
+                                                <!--<div  style="background-color: #138496; border-radius: 20px; padding:5px; position: absolute; top : 5; left : 5; color : white">new</div>-->
+                                            </div>
                                             <c:choose>
                                                 <c:when test="${item.urlImage=='' || item.urlImage==null}">
                                                     <img src="${pageContext.request.contextPath}/public/images/notItem.jpg" alt="IMG-PRODUCT">
@@ -227,11 +243,11 @@
 
                                         <div class="block2-txt p-t-20">
                                             <a href="product-detail.html" class="block2-name dis-block s-text3 p-b-5">
-                                                Herschel supply co 25l
+                                                ${item.note=='' ? 'Herschel supply co 25l' : item.note}
                                             </a>
 
                                             <span class="block2-price m-text6 p-r-5">
-                                                $75.00
+                                                ${item.price}$
                                             </span>
                                         </div>
                                     </div>
@@ -283,6 +299,9 @@
             $(".selection-2").select2({
                 minimumResultsForSearch: 20,
                 dropdownParent: $('#dropDownSelect2')
+            });
+            $(".select-product").change(function () {
+                console.log("Ok");
             });
         </script>
         <!--===============================================================================================-->

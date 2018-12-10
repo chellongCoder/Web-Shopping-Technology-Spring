@@ -37,6 +37,7 @@ public class ItemModel implements IModel<Item> {
                     .setIdProduct(rs.getInt("idProduct"))
                     .setPrice(rs.getDouble("price"))
                     .setUrlImage(rs.getString("urlImage"))
+                    .setNote(rs.getString("note"))
                     .build();
             System.out.println("item " + item);
             list.add(item);
@@ -87,9 +88,12 @@ public class ItemModel implements IModel<Item> {
                     .setIdProduct(rs.getInt("idProduct"))
                     .setPrice(rs.getDouble("price"))
                     .setUrlImage(rs.getString("urlImage"))
+                    .setNote(rs.getString("note"))
                     .build();
             list.add(item);
         }
         return list;
     }
+    
+    
 }

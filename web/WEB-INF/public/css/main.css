@@ -1638,7 +1638,7 @@ li.sale-noti > a {
 ///////////////////////////////////////////////////////////
 */
 .block2-labelsale::before,
-.block2-labelnew::before 
+.col-sm-12::before
 {
   z-index: 100;
   font-family: Montserrat-Regular;
