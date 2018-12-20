@@ -18,9 +18,18 @@ import java.util.List;
  * @author chellong
  */
 public class ProductModel implements IModel<Product> {
-     private Connection conn;
-    public ProductModel() throws Exception {
+    private Connection conn;
+    private static ProductModel instance;
+    
+    private ProductModel() throws Exception {
         conn = DBConnector.getConnection();
+    }
+    
+    public static ProductModel getInstance() throws Exception {
+        if(ProductModel.instance == null) {
+            ProductModel.instance = new ProductModel();
+        }
+        return ProductModel.instance;
     }
     
     @Override

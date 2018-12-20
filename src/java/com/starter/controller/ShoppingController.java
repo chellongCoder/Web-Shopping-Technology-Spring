@@ -12,10 +12,13 @@ import com.starter.model.ItemModel;
 import com.starter.model.ProductModel;
 import com.starter.model.StoreModel;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -30,20 +33,21 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @author chellong
  */
 @Controller
-@SessionAttributes({"StoreInfo", "ItemInfo"})
+@SessionAttributes({"StoreInfo", "ItemInfo", "typeStore"})
 public class ShoppingController {
 
     public static final int ITEM_PER_PAGE = 15;
     private StoreModel storeModel;
     private ItemModel itemModel;
     private ProductModel productModel;
+    private List<Integer> prices;
 
     @RequestMapping(value = "shopping.htm", method = {RequestMethod.POST, RequestMethod.GET})
-    public String shopping(ModelMap model, HttpServletRequest request) {
+    public String shopping(ModelMap model, HttpServletRequest request, HttpSession session) {
         try {
-            storeModel = new StoreModel();
-            itemModel = new ItemModel();
-            productModel = new ProductModel();
+            storeModel = StoreModel.getInstance();
+            itemModel = ItemModel.getInstance();
+            productModel = ProductModel.getInstance();
             Thread t1 = new Thread(() -> {
                 try {
                     List<Store> listStore = storeModel.getAll();
@@ -64,15 +68,78 @@ public class ShoppingController {
                 @Override
                 public void run() {
                     try {
-                        int totalItems = itemModel.getCountPage();
+                        int totalItems = -1;
+                        List<Item> itemPerPage = null;
+                        String typeStore = request.getParameter("typeStore");
+                        String product = request.getParameter("product");
+                        String price = request.getParameter("price");
+                        String min = request.getParameter("min");
+                        String max = request.getParameter("max");
+                        System.out.println("=======PARAM=======" + typeStore);
+                        if (typeStore != null) {
+                            List<Product> list = productModel.selectProductByTypeStore(typeStore);
+                            model.addAttribute("typeProducts", list);
+                            model.addAttribute("typeStore", typeStore);
+                            switch (typeStore) {
+                                case Store.Type.ITSHIRT:
+                                    if (product != null) {
+                                        if (price != null) {
+                                            String[] strs = price.split("[-]");
+                                            itemPerPage = itemModel.getItemByTypeProductAndPrice(product, Integer.parseInt(strs[0]), Integer.parseInt(strs[1]), offset, ShoppingController.ITEM_PER_PAGE);
+                                            totalItems = itemModel.getCountItemByTypeProductAndPrice(product, Integer.parseInt(strs[0]), Integer.parseInt(strs[1]));
+                                            model.addAttribute("selectedProduct", product);
+                                            model.addAttribute("selectedPrice", Integer.parseInt(strs[0]));
+                                        } else if (min != null && max != null) {
+                                            itemPerPage = itemModel.getItemByPrice(Integer.parseInt(min), Integer.parseInt(max), offset, ShoppingController.ITEM_PER_PAGE);
+                                            totalItems = itemModel.getCountItemByPrice(Integer.parseInt(min), Integer.parseInt(max));
+                                        } else {
+                                            System.out.println("product " + product);
+                                            itemPerPage = itemModel.getItemByTypeProduct(product, offset, ShoppingController.ITEM_PER_PAGE);
+                                            totalItems = itemModel.getCountInProduct(product);
+                                            model.addAttribute("selectedProduct", product);
+                                            break;
+                                        }
+                                    } else if (price != null) {
+                                        String[] strs = price.split("[-]");
+                                        itemPerPage = itemModel.getAllItemInStoreByPrice(typeStore, Integer.parseInt(strs[0]), Integer.parseInt(strs[1]), offset, ShoppingController.ITEM_PER_PAGE);
+                                        totalItems = itemModel.getCountItemInStoreByPrice(typeStore, Integer.parseInt(strs[0]), Integer.parseInt(strs[1]));
+                                        model.addAttribute("selectedPrice", Integer.parseInt(strs[0]));
+                                    } else if (min != null && max != null) {
+                                        itemPerPage = itemModel.getItemByPrice(Integer.parseInt(min), Integer.parseInt(max), offset, ShoppingController.ITEM_PER_PAGE);
+                                        totalItems = itemModel.getCountItemByPrice(Integer.parseInt(min), Integer.parseInt(max));
+                                    } else {
+                                        itemPerPage = itemModel.getAllItemInStore(Store.Type.ITSHIRT, offset, ShoppingController.ITEM_PER_PAGE);
+                                        totalItems = itemModel.getCountInStore(typeStore);
+                                    }
+                                    break;
+                                default:
+                            }
+                        }
+                        if (itemPerPage == null) {
+                            if (price != null) {
+                                String[] strs = price.split("[-]");
+                                System.out.println("str " + strs[0]);
+                                itemPerPage = itemModel.getItemByPrice(Integer.parseInt(strs[0]), Integer.parseInt(strs[1]), offset, ShoppingController.ITEM_PER_PAGE);
+                                totalItems = itemModel.getCountItemByPrice(Integer.parseInt(strs[0]), Integer.parseInt(strs[1]));
+                                model.addAttribute("selectedPrice", Integer.parseInt(strs[0]));
+                            } else if (min != null && max != null) {
+                                itemPerPage = itemModel.getItemByPrice(Integer.parseInt(min), Integer.parseInt(max), offset, ShoppingController.ITEM_PER_PAGE);
+                                totalItems = itemModel.getCountItemByPrice(Integer.parseInt(min), Integer.parseInt(max));
+                            } else {
+                                itemPerPage = itemModel.getItemPerPage(offset, ShoppingController.ITEM_PER_PAGE);
+                            }
+                        }
+                        if (totalItems == -1) {
+                            totalItems = itemModel.getCountPage();
+                        }
                         model.addAttribute("totalItems", totalItems);
 
                         int count = (int) Math.ceil((double) totalItems / ShoppingController.ITEM_PER_PAGE);
                         model.addAttribute("totalPages", count);
 
-                        List<Item> itemPerPage = itemModel.getItemPerPage(offset, ShoppingController.ITEM_PER_PAGE);
                         model.addAttribute("ItemInfo", itemPerPage);
 
+                        model.addAttribute("prices", ItemModel.prices);
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -94,6 +161,8 @@ public class ShoppingController {
             t1.join();
             t2.join();
             t3.join();
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            ex.printStackTrace();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -102,17 +171,17 @@ public class ShoppingController {
     }
 
     @RequestMapping(value = "selectStore.htm")
-    public String handleSelectStore(@RequestParam(value = "type") String type, ModelMap model, RedirectAttributes ra) {
+    public String handleSelectStore(@RequestParam(value = "typeStore") String typeStore, ModelMap model, RedirectAttributes ra) {
         try {
-            System.out.println("type " + type);
-            switch (type) {
+            System.out.println("typeStore " + typeStore);
+            switch (typeStore) {
                 case Store.Type.ITSHIRT:
                     //handle select by type store
-                    List<Product> list = productModel.selectProductByTypeStore(type);
-                    for (Product product : list) {
-                        System.out.println("product " + product);
-                    }
-                    ra.addFlashAttribute("typeProducts", list);
+//                    List<Product> list = productModel.selectProductByTypeStore(type);
+//                    for (Product product : list) {
+//                        System.out.println("product " + product);
+//                    }
+//                    model.addAttribute("typeProducts", list);
                     break;
 
                 case Store.Type.ACCESSORY:
@@ -129,8 +198,23 @@ public class ShoppingController {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return "redirect:/shopping.htm";
+        return "redirect:/shopping.htm?typeStore=" + typeStore;
     }
-    
-   
+
+    @RequestMapping(value = "filter-by-type-product.htm")
+    public String filterByTypeProduct(ServletRequest request, HttpSession session) {
+        String typeProduct = request.getParameter("type-product");
+        String typeStore = (String) session.getAttribute("typeStore");
+        String price = request.getParameter("price");
+        System.out.println("price " + price + "type product " + typeProduct);
+        if (!typeProduct.equals("") && !price.equals("")) {
+            System.out.println("1");
+            return "redirect:/shopping.htm?product=" + typeProduct + "&price=" + price;
+        } else if (price.equals("")) {
+            System.out.println("2");
+            return "redirect:/shopping.htm?product=" + typeProduct;
+        }
+        System.out.println("3");
+        return "redirect:/shopping.htm?price=" + price;
+    }
 }

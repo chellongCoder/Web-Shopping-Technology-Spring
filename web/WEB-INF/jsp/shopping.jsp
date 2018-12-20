@@ -68,16 +68,38 @@
 
                             <ul class="p-b-54">
                                 <li class="p-t-4">
-                                    <a href="#" class="s-text13 active1">
-                                        All
-                                    </a>
+                                    <c:choose>
+                                        <c:when test="${typeStore==null || typeStore=='all'}">
+                                             <a href="shopping.htm?typeStore=all" class="s-text13 active1">
+                                                All
+                                             </a>
+                                        </c:when>    
+                                        <c:otherwise>
+                                              <a href="shopping.htm?typeStore=all" class="s-text13 ">
+                                                All
+                                              </a>
+                                        </c:otherwise>
+                                    </c:choose>
+                                  
                                 </li>
                                 <c:forEach var="item" items="${StoreInfo}">
-                                    <li class="p-t-4">
-                                        <a href="selectStore.htm?type=${item.type}" class="s-text13">
-                                            ${item.type}
-                                        </a>
-                                    </li>
+
+                                    <c:choose>
+                                        <c:when test="${item.type == typeStore}">
+                                            <li class="p-t-4">
+                                                <a href="selectStore.htm?typeStore=${item.type}" class="s-text13 active1">
+                                                    ${item.type}
+                                                </a>
+                                            </li>
+                                        </c:when>    
+                                        <c:otherwise>
+                                            <li class="p-t-4">
+                                                <a href="selectStore.htm?typeStore=${item.type}" class="s-text13">
+                                                    ${item.type}
+                                                </a>
+                                            </li>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </c:forEach>
                             </ul>
 
@@ -98,13 +120,13 @@
                                 <div class="flex-sb-m flex-w p-t-16">
                                     <div class="w-size11">
                                         <!-- Button -->
-                                        <button class="flex-c-m size4 bg7 bo-rad-15 hov1 s-text14 trans-0-4">
+                                        <a onclick='return handleFilter()' href="#" id="filter" class="flex-c-m size4 bg7 bo-rad-15 hov1 s-text14 trans-0-4">
                                             Filter
-                                        </button>
+                                        </a>
                                     </div>
 
                                     <div class="s-text3 p-t-10 p-b-10">
-                                        Range: $<span id="value-lower">610</span> - $<span id="value-upper">980</span>
+                                        Range: $<span id="value-lower">1000</span> - $<span id="value-upper">3000</span>
                                     </div>
                                 </div>
                             </div>
@@ -165,28 +187,51 @@
                     <div class="col-sm-6 col-md-8 col-lg-9 p-b-50">
                         <!--  -->
                         <div class="flex-sb-m flex-w p-b-35">
-                            <form class="flex-w">
+                            <form id="products" method="POST" action="filter-by-type-product.htm" class="flex-w">
                                 <div class="form-group w-size12 m-t-5 m-b-5 m-r-10">
-
-                                    <select class="select-product form-control" name="sorting">
-                                        <!--                                        <option>Default Sorting</option>
-                                                                                <option>Popularity</option>
-                                                                                <option>Price: low to high</option>
-                                                                                <option>Price: high to low</option>-->
+                                    <select class="select-product form-control" name="type-product">
+                                        <option value="">---Select Product---</option>
                                         <c:forEach items="${typeProducts}" var="item">
-                                            <option>${item.nameProduct}</option>
+                                            <c:choose>
+                                                <c:when test="${item.nameProduct.equals(selectedProduct)}">
+                                                    <option selected value="${item.nameProduct}">${item.nameProduct}</option>
+                                                </c:when>    
+                                                <c:otherwise>
+                                                    <option value="${item.nameProduct}">${item.nameProduct}</option>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </c:forEach>
                                     </select>
                                 </div>
 
                                 <div class="form-group w-size12 m-t-5 m-b-5 m-r-10">
-                                    <select class="form-control" name="sorting">
-                                        <option>Price</option>
-                                        <option>$0.00 - $50.00</option>
-                                        <option>$50.00 - $100.00</option>
-                                        <option>$100.00 - $150.00</option>
-                                        <option>$150.00 - $200.00</option>
-                                        <option>$200.00+</option>
+                                    <select class="select-price form-control" name="price">
+                                        <option value="">Price</option>
+                                        <c:forEach begin="0" end="${prices.size()-1}" var="i">
+                                            <c:choose>
+                                                <c:when test="${i==prices.size()-1}">
+                                                    <c:choose>
+                                                        <c:when test="${selectedPrice == prices[i]}">
+                                                            <option selected value="${prices[prices.size()-1]}-${""}">$${prices[prices.size()-1]}+</option> 
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <option value="${prices[prices.size()-1]}-${100000}">$${prices[prices.size()-1]}+</option>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <c:choose>
+                                                        <c:when test="${selectedPrice == prices[i]}">
+                                                            <option selected value="${prices[i]}-${prices[i+1]}">$${prices[i]} - $${prices[i+1]}</option>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <option value="${prices[i]}-${prices[i+1]}">$${prices[i]} - $${prices[i+1]}</option>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </c:otherwise>
+                                            </c:choose>
+                                            
+                                        </c:forEach>
 
                                     </select>
                                 </div>
@@ -268,7 +313,7 @@
                                         <a  href="#" class="active-pagination" style="padding-left: 10px; padding-right: 10px; border-radius: 20px; margin-right: 10px">${i}</a>
                                     </c:when>    
                                     <c:otherwise>
-                                        <a href="shopping.htm?page=${i}" class="" style="padding-left: 10px; padding-right: 10px; border-radius: 30px; margin-right: 10px; background-color:rgba(0, 0, 0, 0.3); color: white">${i}</a>   
+                                        <a href="shopping.htm?page=${i}&typeStore=${typeStore}&product=${selectedProduct}" class="" style="padding-left: 10px; padding-right: 10px; border-radius: 30px; margin-right: 10px; background-color:rgba(0, 0, 0, 0.3); color: white">${i}</a>   
                                     </c:otherwise>
                                 </c:choose>
                             </c:forEach>
@@ -301,7 +346,10 @@
                 dropdownParent: $('#dropDownSelect2')
             });
             $(".select-product").change(function () {
-                console.log("Ok");
+                $("#products").submit();
+            });
+            $(".select-price").change(function () {
+                $("#products").submit();
             });
         </script>
         <!--===============================================================================================-->
@@ -336,11 +384,11 @@
             var filterBar = document.getElementById('filter-bar');
 
             noUiSlider.create(filterBar, {
-                start: [50, 200],
+                start: [0, 3000],
                 connect: true,
                 range: {
-                    'min': 50,
-                    'max': 200
+                    'min': 0,
+                    'max': 3000
                 }
             });
 
@@ -352,6 +400,14 @@
             filterBar.noUiSlider.on('update', function (values, handle) {
                 skipValues[handle].innerHTML = Math.round(values[handle]);
             });
+            
+            function handleFilter() {
+                console.log("ok",  );
+                var min = document.getElementById('value-lower').innerHTML;
+                var max = document.getElementById('value-upper').innerHTML;
+                var a = document.getElementById('filter'); //or grab it by tagname etc
+                a.href = "shopping.htm?min="+min+"&max="+max;
+            }
         </script>
         <!--===============================================================================================-->
         <script src="${pageContext.request.contextPath}/public/js/main.js"></script>

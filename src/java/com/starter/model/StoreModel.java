@@ -30,8 +30,17 @@ import javax.imageio.ImageIO;
  */
 public class StoreModel implements IModel<Store> {
     private Connection conn;
-    public StoreModel() throws Exception {
+    private static StoreModel instance;
+    
+    private  StoreModel() throws Exception {
        conn = DBConnector.getConnection();
+    }
+    
+    public static StoreModel getInstance () throws Exception {
+        if(StoreModel.instance == null) {
+            StoreModel.instance = new StoreModel();
+        }
+        return StoreModel.instance;
     }
     
     public List<Store> getAll() throws Exception {

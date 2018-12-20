@@ -95,13 +95,13 @@ public class TestModel {
 
     public static void main(String[] args) {
         try {
-            String path = "/Users/chellong/OneDriver/OneDrive - hocvienact.edu.vn/Ao IT/System/system";
-            File folder = new File(path);
-            File[] listOfFiles = folder.listFiles();
-
-            for (int i = 0; i < listOfFiles.length; i++) {
-                System.out.println("result " + TestModel.add(listOfFiles[i].getName()));
-            }
+//            String path = "/Users/chellong/OneDriver/OneDrive - hocvienact.edu.vn/Ao IT/System/system";
+//            File folder = new File(path);
+//            File[] listOfFiles = folder.listFiles();
+//
+//            for (int i = 0; i < listOfFiles.length; i++) {
+//                System.out.println("result " + TestModel.add(listOfFiles[i].getName()));
+//            }
 //            TestModel.renameFile();
 //            Runnable r = new Runnable1();
 //            Thread t = new Thread(r);
@@ -115,6 +115,12 @@ public class TestModel {
 //                int addMacbook = TestModel.addMacbook(i);
 //                System.out.println("result " + addMacbook);
 //            }
+            String str = "0-1000";
+            String[] strs = str.split("[-]+");
+            for (int i = 0; i < strs.length; i++) {
+                System.out.println("strs " + strs[i]);
+            }
+            System.out.println("s1 " + strs[0] + " " + strs[1]);
         } catch (Exception e) {
             e.printStackTrace();
         }
