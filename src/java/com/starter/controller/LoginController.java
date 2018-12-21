@@ -92,8 +92,10 @@ public class LoginController {
         return "redirect:/index.htm";
     }
     
-    @RequestMapping(value = "adminLogin")
+    @RequestMapping(value = "adminLogin.htm")
     public String adminLogin () {
         return "admin/login";
     }
+    
+ 
 }

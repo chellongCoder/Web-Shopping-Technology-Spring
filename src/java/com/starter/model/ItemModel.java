@@ -14,6 +14,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -160,10 +162,7 @@ public class ItemModel implements IModel<Item> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public Item getById(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+
 
     public int getCountPage() throws Exception {
         String sql = "SELECT COUNT('*') as count FROM ITEM";
@@ -286,6 +285,31 @@ public class ItemModel implements IModel<Item> {
             list.add(item);
         }
         return list;
+    }
+
+    @Override
+    public Item getById(int id) {
+        try {
+            String sql = "SELECT * FROM ITEM join PRODUCT on ITEM.`idProduct`=PRODUCT.`idProduct` WHERE idItem = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            Item item = null;
+            if(rs.next()) {
+                item = new Item.ItemBuilder(rs.getString("status"))
+                        .setIdItem(rs.getInt("idItem"))
+                        .setIdProduct(rs.getInt("idProduct"))
+                        .setPrice(rs.getDouble("price"))
+                        .setUrlImage(rs.getString("urlImage"))
+                        .setNote(rs.getString("note"))
+                        .build();
+                System.out.println("item " + item);
+            }
+            return item;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
 }

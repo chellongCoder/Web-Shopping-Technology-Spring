@@ -20,6 +20,6 @@ public interface IModel<T> {
     public int add(T t) throws Exception;
     public int update(T c);
     public int delete(int id); 
-    public T getById(int id);
+    public T getById(int id) throws Exception;
     
 }

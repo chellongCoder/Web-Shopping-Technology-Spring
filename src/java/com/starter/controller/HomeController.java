@@ -31,7 +31,8 @@ public class HomeController {
         return "index";
     }
     @RequestMapping("/logout.htm")
-    public String logout(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+    public String logout(HttpSession session, HttpServletRequest request, HttpServletResponse response, SessionStatus status) {
+        status.setComplete();
         session.removeAttribute("LoginInfo");
         Cookie[] cookies = request.getCookies();
         for (Cookie cooky : cookies) {

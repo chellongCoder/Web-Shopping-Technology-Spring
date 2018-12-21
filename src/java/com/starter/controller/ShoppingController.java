@@ -5,6 +5,7 @@
  */
 package com.starter.controller;
 
+import com.google.gson.Gson;
 import com.starter.bean.Item;
 import com.starter.bean.Product;
 import com.starter.bean.Store;
@@ -13,19 +14,26 @@ import com.starter.model.ProductModel;
 import com.starter.model.StoreModel;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.json.JsonObject;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -33,7 +41,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * @author chellong
  */
 @Controller
-@SessionAttributes({"StoreInfo", "ItemInfo", "typeStore"})
+@SessionAttributes({"StoreInfo", "ItemInfo", "typeStore", "cartItem"})
 public class ShoppingController {
 
     public static final int ITEM_PER_PAGE = 15;
@@ -43,8 +51,10 @@ public class ShoppingController {
     private List<Integer> prices;
 
     @RequestMapping(value = "shopping.htm", method = {RequestMethod.POST, RequestMethod.GET})
-    public String shopping(ModelMap model, HttpServletRequest request, HttpSession session) {
+    public String shopping(ModelMap model, HttpServletRequest request, HttpSession session, SessionStatus status) {
         try {
+//            status.setComplete();
+//            session.removeAttribute("cartItem");
             storeModel = StoreModel.getInstance();
             itemModel = ItemModel.getInstance();
             productModel = ProductModel.getInstance();
@@ -140,6 +150,22 @@ public class ShoppingController {
                         model.addAttribute("ItemInfo", itemPerPage);
 
                         model.addAttribute("prices", ItemModel.prices);
+                        
+                        Map<Integer, Integer> map = (Map<Integer, Integer>) session.getAttribute("cartItem");
+                        if(map!=null) {
+                            Map<Item, Integer> items = new HashMap<>();
+                            for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+                                Item item = itemModel.getById(entry.getKey());
+                                items.put(item, entry.getValue());
+                                model.addAttribute("items", items);
+                //                if (entry.getKey().equals(jsonInString)) {
+                //                    items.put(jsonInString, Integer.parseInt(idItem) + 1);
+                //                } else {
+                //                    items.put(jsonInString, 1);
+                //                }
+                                System.out.println(entry.getKey() + "/" + entry.getValue());
+                            }
+                        }
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -216,5 +242,54 @@ public class ShoppingController {
         }
         System.out.println("3");
         return "redirect:/shopping.htm?price=" + price;
+    }
+
+    @RequestMapping(value = "addtocart.htm", method = RequestMethod.POST)
+    @ResponseBody
+    public String test(@RequestParam String idItem, HttpServletRequest request, ModelMap model) {
+        try {
+            
+            HttpSession session = request.getSession();
+            System.out.println("request " + request + "parse " + idItem);
+            Map<Integer, Integer> items = (Map<Integer, Integer>) session.getAttribute("cartItem");
+           
+            if (items == null) {
+                items = new HashMap<>();
+            }
+            boolean check = false;
+            for (Map.Entry<Integer, Integer> entry : items.entrySet()) {
+                if(entry.getKey() == Integer.parseInt(idItem)) {
+                    items.put(entry.getKey(), entry.getValue() + 1);
+                    check = true;
+                }
+            }
+            if(!check) {
+                items.put(Integer.parseInt(idItem), 1);
+            }
+            Map<String , Integer> itemsAndAmount = new HashMap<>();
+            for (Map.Entry<Integer, Integer> entry : items.entrySet()) {
+                Item item = itemModel.getById(entry.getKey());
+                Gson gson = new Gson();
+                String jsonInString = gson.toJson(item);
+                System.out.println("json " + jsonInString);
+                itemsAndAmount.put(jsonInString, entry.getValue());
+//                if (entry.getKey().equals(jsonInString)) {
+//                    items.put(jsonInString, Integer.parseInt(idItem) + 1);
+//                } else {
+//                    items.put(jsonInString, 1);
+//                }
+                System.out.println(entry.getKey() + "/" + entry.getValue());
+            }
+
+            JSONObject json = new JSONObject();
+            json.putAll(itemsAndAmount);
+            System.out.printf("JSON: %s", json.toString());
+            model.addAttribute("cartItem", items);
+
+            return json.toString();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return "";
     }
 }

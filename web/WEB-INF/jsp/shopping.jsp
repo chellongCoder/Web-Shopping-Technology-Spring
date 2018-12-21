@@ -70,17 +70,17 @@
                                 <li class="p-t-4">
                                     <c:choose>
                                         <c:when test="${typeStore==null || typeStore=='all'}">
-                                             <a href="shopping.htm?typeStore=all" class="s-text13 active1">
+                                            <a href="shopping.htm?typeStore=all" class="s-text13 active1">
                                                 All
-                                             </a>
+                                            </a>
                                         </c:when>    
                                         <c:otherwise>
-                                              <a href="shopping.htm?typeStore=all" class="s-text13 ">
+                                            <a href="shopping.htm?typeStore=all" class="s-text13 ">
                                                 All
-                                              </a>
+                                            </a>
                                         </c:otherwise>
                                     </c:choose>
-                                  
+
                                 </li>
                                 <c:forEach var="item" items="${StoreInfo}">
 
@@ -230,7 +230,7 @@
                                                     </c:choose>
                                                 </c:otherwise>
                                             </c:choose>
-                                            
+
                                         </c:forEach>
 
                                     </select>
@@ -242,6 +242,7 @@
                             </span>
                         </div>
                         <!-- Product -->
+                        <div id="number">1</div>
                         <div class="row">
                             <c:forEach items="${ItemInfo}" var="item">
 
@@ -279,9 +280,15 @@
                                                 </a>
 
                                                 <div class="block2-btn-addcart w-size1 trans-0-4"> 
-                                                    <button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
-                                                        Add to Cart
-                                                    </button>
+                                                    <c:choose>
+                                                        <c:when test="${item.urlImage=='' || item.urlImage==null}">
+                                                            <a  href="#" class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">Add to Cart</a>
+                                                        </c:when>    
+                                                        <c:otherwise>
+                                                            <a onclick='javascript:addItemToCart(${item.idItem});' href="#" class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">Add to Cart</a>
+                                                            <br />
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </div>
                                             </div>
                                         </div>
@@ -336,6 +343,54 @@
         <!--===============================================================================================-->
         <script type="text/javascript" src="${pageContext.request.contextPath}/public/vendor/select2/select2.min.js"></script>
         <script type="text/javascript">
+            var items = {};
+            function addItemToCart(sku)
+            {
+//                items[sku] = sku;
+//                console.log("item ", items);
+                $(".header-cart-wrapitem").empty();
+                console.log("asdasd");
+                $.post("http://localhost:54130/SpringStarter/addtocart.htm", {
+                    idItem: sku
+                }, function (data) {
+                    
+                    var json = JSON.parse(data);
+                    console.log("json ", json);
+                    
+                    $("#number").html(json);
+                    var sum = 0;
+                    for (var i = 0; i < Object.keys(json).length; i++) {
+                        var item = JSON.parse(Object.keys(json)[i]);
+                        console.log("item ", item);
+                        var url = item.urlImage.split("/");
+                        var name = url[url.length-1].split(".")[i];
+                        var sum = sum + (item.price * json[Object.keys(json)[i]]);
+                        var amount = json[Object.keys(json)[i]];
+                        console.log("json[0] ", item, amount);
+                        $(".header-cart-wrapitem").append(`
+                                <li class="header-cart-item">
+                                    <div class="header-cart-item-img">
+                                        <img src="`+item.urlImage+`" alt="IMG">
+                                    </div>
+
+                                    <div class="header-cart-item-txt">
+                                        <a href="#" class="header-cart-item-name">
+                                            `+name+`
+                                        </a>
+
+                                        <span class="header-cart-item-info">
+                                            `+amount +` x `+ item.price+`
+                                        </span>
+                                    </div>
+                                </li>`);
+                    }
+                   
+                    $(".header-cart-total").html("Total: $" + sum);
+                }).done(function () {
+                    console.log("done");
+                }).fail(function (xhr, textStatus, errorThrown) {
+                });
+            }
             $(".selection-1").select2({
                 minimumResultsForSearch: 20,
                 dropdownParent: $('#dropDownSelect1')
@@ -400,13 +455,13 @@
             filterBar.noUiSlider.on('update', function (values, handle) {
                 skipValues[handle].innerHTML = Math.round(values[handle]);
             });
-            
+
             function handleFilter() {
-                console.log("ok",  );
+                console.log("ok", );
                 var min = document.getElementById('value-lower').innerHTML;
                 var max = document.getElementById('value-upper').innerHTML;
                 var a = document.getElementById('filter'); //or grab it by tagname etc
-                a.href = "shopping.htm?min="+min+"&max="+max;
+                a.href = "shopping.htm?min=" + min + "&max=" + max;
             }
         </script>
         <!--===============================================================================================-->

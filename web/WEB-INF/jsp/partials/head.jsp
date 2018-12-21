@@ -3,6 +3,7 @@
     Created on : Nov 27, 2018, 10:38:46 AM
     Author     : pc
 --%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- Bootstrap CSS -->
 <header class="header2">
         <!-- Header desktop -->
@@ -18,7 +19,7 @@
 
                 <!-- Logo2 -->
                 <a href="index.html" class="logo2">
-                    <img src="${pageContext.request.contextPath}/public/images/icons/logo.png" alt="IMG-LOGO">
+                    <img src="${pageContext.request.contextPath}/public/images/ITShopping.png" alt="IMG-LOGO">
                 </a>
 
                 <div class="topbar-child2">
@@ -44,7 +45,11 @@
                         <!-- Header cart noti -->
                         <div class="header-cart header-dropdown">
                             <ul class="header-cart-wrapitem">
-                                <li class="header-cart-item">
+                                <c:out value="San pham ${items}"/>
+                                <c:forEach items="${items}" var="item">
+                                    <c:out value="${item}"/><br/>
+                                </c:forEach>
+<!--                                <li class="header-cart-item">
                                     <div class="header-cart-item-img">
                                         <img src="${pageContext.request.contextPath}/public/images/item-cart-01.jpg" alt="IMG">
                                     </div>
@@ -90,7 +95,7 @@
                                             1 x $17.00
                                         </span>
                                     </div>
-                                </li>
+                                </li>-->
                             </ul>
 
                             <div class="header-cart-total">
@@ -105,12 +110,7 @@
                                     </a>
                                 </div>
 
-                                <div class="header-cart-wrapbtn">
-                                    <!-- Button -->
-                                    <a href="#" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
-                                        Check Out
-                                    </a>
-                                </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -173,7 +173,7 @@
         <div class="wrap_header_mobile">
             <!-- Logo moblie -->
             <a href="index.html" class="logo-mobile">
-                <img src="${pageContext.request.contextPath}/public/images/icons/logo.png" alt="IMG-LOGO">
+                <img src="${pageContext.request.contextPath}/public/images/ITShopping.png" alt="IMG-LOGO">
             </a>
 
             <!-- Button show menu -->
