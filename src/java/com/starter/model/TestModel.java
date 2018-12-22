@@ -5,6 +5,7 @@
  */
 package com.starter.model;
 
+import com.starter.bean.Item;
 import com.starter.db.DBConnector;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -13,6 +14,9 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import javax.imageio.ImageIO;
 
 /**
@@ -75,7 +79,37 @@ public class TestModel {
 
         return pstmt.executeUpdate();
     }
-
+    
+    public static List<Item> getListItem () throws Exception {
+        List<Item> list = new ArrayList<>();
+        Connection conn = DBConnector.getConnection();
+        String sql = "select * from ITEM";
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        ResultSet rs = pstmt.executeQuery();
+        while(rs.next()) {
+            Item item = new Item.ItemBuilder(rs.getString("status"))
+                        .setIdItem(rs.getInt("idItem"))
+                        .setIdProduct(rs.getInt("idProduct"))
+                        .setPrice(rs.getDouble("price"))
+                        .setUrlImage(rs.getString("urlImage"))
+                        .setNote(rs.getString("note"))
+                        .setName(rs.getString("name"))
+                        .build();
+            
+            list.add(item);
+        }
+        return list;
+    } 
+    
+    public static int updateName(String name) throws Exception {
+        Connection conn = DBConnector.getConnection();
+        String sql = "update ITEM set ITEM.`name` = ?";
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, name);
+        int result = pstmt.executeUpdate();
+        return result;
+    }
+    
     static class Runnable1 implements Runnable {
         public void run() {
             for (int i = 1; i <= 1000; i += 2) {
@@ -115,12 +149,27 @@ public class TestModel {
 //                int addMacbook = TestModel.addMacbook(i);
 //                System.out.println("result " + addMacbook);
 //            }
-            String str = "0-1000";
-            String[] strs = str.split("[-]+");
-            for (int i = 0; i < strs.length; i++) {
-                System.out.println("strs " + strs[i]);
+//            String str = "0-1000";
+//            String[] strs = str.split("[-]+");
+//            for (int i = 0; i < strs.length; i++) {
+//                System.out.println("strs " + strs[i]);
+//            }
+//            System.out.println("s1 " + strs[0] + " " + strs[1]);
+//                String url = "http://localhost:54130/SpringStarter/public/images/java01.jpg";
+//                String[] arr = url.split("/");
+//                for (String string : arr) {
+//                    System.out.println("string " + string );
+//                    
+//                }
+            List<Item> list = getListItem();
+            for (Item item : list) {
+                System.out.println("item " + item);
+                String url = item.getUrlImage();
+                String[] arr = url.split("/");
+                String[] result = arr[arr.length - 1].split("[.]");
+                int updateName = TestModel.updateName(result[0]);
+                if(updateName > 0) System.out.println("ok ");
             }
-            System.out.println("s1 " + strs[0] + " " + strs[1]);
         } catch (Exception e) {
             e.printStackTrace();
         }

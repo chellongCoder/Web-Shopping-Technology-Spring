@@ -247,7 +247,7 @@
                             <c:forEach items="${ItemInfo}" var="item">
 
                                 <div class="col-sm-12 col-md-6 col-lg-4 p-b-50">
-                                    Block2 
+                                    ${item.name} 
                                     <div class="block2">
                                         <div class="block2-img wrap-pic-w of-hidden pos-relative">
                                             <div>
@@ -295,7 +295,7 @@
 
                                         <div class="block2-txt p-t-20">
                                             <a href="product-detail.html" class="block2-name dis-block s-text3 p-b-5">
-                                                ${item.note=='' ? 'Herschel supply co 25l' : item.note}
+                                                ${item.note=='' ? 'IT Shirt : Coding every where!' : item.note}
                                             </a>
 
                                             <span class="block2-price m-text6 p-r-5">
@@ -350,7 +350,7 @@
 //                console.log("item ", items);
                 $(".header-cart-wrapitem").empty();
                 console.log("asdasd");
-                $.post("http://localhost:54130/SpringStarter/addtocart.htm", {
+                $.post("/SpringStarter/addtocart.htm", {
                     idItem: sku
                 }, function (data) {
                     
@@ -386,6 +386,7 @@
                     }
                    
                     $(".header-cart-total").html("Total: $" + sum);
+                    $(".header-icons-noti").html(Object.keys(json).length);
                 }).done(function () {
                     console.log("done");
                 }).fail(function (xhr, textStatus, errorThrown) {

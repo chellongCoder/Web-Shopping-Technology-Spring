@@ -26,7 +26,7 @@ public class ItemModel implements IModel<Item> {
     private Connection conn;
     private static ItemModel instance = null;
     public static List<Integer> prices;
-
+    
     private ItemModel() throws Exception {
         conn = DBConnector.getConnection();
     }
@@ -59,6 +59,7 @@ public class ItemModel implements IModel<Item> {
                     .setPrice(rs.getDouble("price"))
                     .setUrlImage(rs.getString("urlImage"))
                     .setNote(rs.getString("note"))
+                    .setName(rs.getString("name"))
                     .build();
             System.out.println("item " + item);
             list.add(item);
@@ -81,6 +82,7 @@ public class ItemModel implements IModel<Item> {
                     .setPrice(rs.getDouble("price"))
                     .setUrlImage(rs.getString("urlImage"))
                     .setNote(rs.getString("note"))
+                    .setName(rs.getString("name"))
                     .build();
             System.out.println("item " + item);
             list.add(item);
@@ -105,6 +107,7 @@ public class ItemModel implements IModel<Item> {
                     .setPrice(rs.getDouble("price"))
                     .setUrlImage(rs.getString("urlImage"))
                     .setNote(rs.getString("note"))
+                    .setName(rs.getString("name"))
                     .build();
             System.out.println("item " + item);
             list.add(item);
@@ -128,6 +131,7 @@ public class ItemModel implements IModel<Item> {
                     .setPrice(rs.getDouble("price"))
                     .setUrlImage(rs.getString("urlImage"))
                     .setNote(rs.getString("note"))
+                   .setName(rs.getString("name"))
                     .build();
             System.out.println("item " + item);
             list.add(item);
@@ -237,6 +241,7 @@ public class ItemModel implements IModel<Item> {
                     .setPrice(rs.getDouble("price"))
                     .setUrlImage(rs.getString("urlImage"))
                     .setNote(rs.getString("note"))
+                    .setName(rs.getString("name"))
                     .build();
             list.add(item);
         }
@@ -260,6 +265,7 @@ public class ItemModel implements IModel<Item> {
                     .setPrice(rs.getDouble("price"))
                     .setUrlImage(rs.getString("urlImage"))
                     .setNote(rs.getString("note"))
+                    .setName(rs.getString("name"))
                     .build();
             list.add(item);
         }
@@ -281,6 +287,7 @@ public class ItemModel implements IModel<Item> {
                     .setPrice(rs.getDouble("price"))
                     .setUrlImage(rs.getString("urlImage"))
                     .setNote(rs.getString("note"))
+                    .setName(rs.getString("name"))
                     .build();
             list.add(item);
         }
@@ -302,6 +309,7 @@ public class ItemModel implements IModel<Item> {
                         .setPrice(rs.getDouble("price"))
                         .setUrlImage(rs.getString("urlImage"))
                         .setNote(rs.getString("note"))
+                        .setName(rs.getString("name"))
                         .build();
                 System.out.println("item " + item);
             }

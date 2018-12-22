@@ -158,11 +158,6 @@ public class ShoppingController {
                                 Item item = itemModel.getById(entry.getKey());
                                 items.put(item, entry.getValue());
                                 model.addAttribute("items", items);
-                //                if (entry.getKey().equals(jsonInString)) {
-                //                    items.put(jsonInString, Integer.parseInt(idItem) + 1);
-                //                } else {
-                //                    items.put(jsonInString, 1);
-                //                }
                                 System.out.println(entry.getKey() + "/" + entry.getValue());
                             }
                         }

@@ -6,6 +6,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- Bootstrap CSS -->
 <header class="header2">
+        <c:set var="sum" value="${0}"/>
+
         <!-- Header desktop -->
         <div class="container-menu-header-v2 p-t-26">
             <div class="topbar2">
@@ -40,72 +42,40 @@
 
                     <div class="header-wrapicon2 m-r-13">
                         <img src="${pageContext.request.contextPath}/public/images/icons/icon-header-02.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
-                        <span class="header-icons-noti">0</span>
+                        <span  class="header-icons-noti">${items!=null ? items.size() : 0}</span>
 
                         <!-- Header cart noti -->
                         <div class="header-cart header-dropdown">
                             <ul class="header-cart-wrapitem">
-                                <c:out value="San pham ${items}"/>
                                 <c:forEach items="${items}" var="item">
-                                    <c:out value="${item}"/><br/>
+                                    <li class="header-cart-item">
+                                        <div class="header-cart-item-img">
+                                            <img src="${item.key.urlImage}" alt="IMG">
+                                        </div>
+
+                                        <div class="header-cart-item-txt">
+                                            <a href="#" class="header-cart-item-name">
+                                                ${item.key.idItem}
+                                            </a>
+
+                                            <span class="header-cart-item-info">
+                                                ${item.value} x ${item.key.price}
+                                                <c:set var="sum" value="${sum + (item.value*item.key.price)}" />
+                                            </span>
+                                        </div>
+                                    </li>
                                 </c:forEach>
-<!--                                <li class="header-cart-item">
-                                    <div class="header-cart-item-img">
-                                        <img src="${pageContext.request.contextPath}/public/images/item-cart-01.jpg" alt="IMG">
-                                    </div>
 
-                                    <div class="header-cart-item-txt">
-                                        <a href="#" class="header-cart-item-name">
-                                            White Shirt With Pleat Detail Back
-                                        </a>
-
-                                        <span class="header-cart-item-info">
-                                            1 x $19.00
-                                        </span>
-                                    </div>
-                                </li>
-
-                                <li class="header-cart-item">
-                                    <div class="header-cart-item-img">
-                                        <img src="${pageContext.request.contextPath}/public/images/item-cart-02.jpg" alt="IMG">
-                                    </div>
-
-                                    <div class="header-cart-item-txt">
-                                        <a href="#" class="header-cart-item-name">
-                                            Converse All Star Hi Black Canvas
-                                        </a>
-
-                                        <span class="header-cart-item-info">
-                                            1 x $39.00
-                                        </span>
-                                    </div>
-                                </li>
-
-                                <li class="header-cart-item">
-                                    <div class="header-cart-item-img">
-                                        <img src="${pageContext.request.contextPath}/public/images/item-cart-03.jpg" alt="IMG">
-                                    </div>
-
-                                    <div class="header-cart-item-txt">
-                                        <a href="#" class="header-cart-item-name">
-                                            Nixon Porter Leather Watch In Tan
-                                        </a>
-
-                                        <span class="header-cart-item-info">
-                                            1 x $17.00
-                                        </span>
-                                    </div>
-                                </li>-->
                             </ul>
 
                             <div class="header-cart-total">
-                                Total: $75.00
+                                $${items!=null ? sum : 0}
                             </div>
 
                             <div class="header-cart-buttons">
                                 <div class="header-cart-wrapbtn">
                                     <!-- Button -->
-                                    <a href="cart.html" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+                                    <a href="cart.htm" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
                                         View Cart
                                     </a>
                                 </div>

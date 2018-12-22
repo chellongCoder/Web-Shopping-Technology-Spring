@@ -19,7 +19,7 @@ public class Item {
     private Status status;
     private String urlImage;
     private String note;
-
+    private String name;
     public Item(ItemBuilder builder) {
         this.idItem = builder.idItem;
         this.idProduct = builder.idProduct;
@@ -27,6 +27,11 @@ public class Item {
         this.status = builder.status;
         this.urlImage = builder.urlImage;
         this.note = builder.note;
+        this.name = builder.name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public int getIdItem() {
@@ -55,7 +60,7 @@ public class Item {
 
     @Override
     public String toString() {
-        return "Item{" + "idItem=" + idItem + ", idProduct=" + idProduct + ", price=" + price + ", status=" + status + ", urlImage=" + urlImage + ", note=" + note + '}';
+        return "{" + "\"idItem\":" + idItem + ", \"idProduct\":" + idProduct + ", \"price\":" + price + ", \"status\":" + "\"" +status + "\"" + ", \"urlImage\":" + "\""+urlImage+ "\""+ ", \"note\":" +"\""+note+ "\"" + ", \"name\":"+"\""+name+ "\"" + '}';
     }
     
 
@@ -69,6 +74,7 @@ public class Item {
         private Status status;
         private String urlImage;
         private String note;
+        private String name;
         public ItemBuilder(String status) {
             switch (status) {
                 case "new":
@@ -112,6 +118,10 @@ public class Item {
 
         public ItemBuilder setNote(String note) {
             this.note = note;
+            return this;
+        }
+        public ItemBuilder setName(String name) {
+            this.name = name;
             return this;
         }
         
