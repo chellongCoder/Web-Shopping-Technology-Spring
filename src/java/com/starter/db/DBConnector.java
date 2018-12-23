@@ -18,7 +18,7 @@ import org.mindrot.jbcrypt.BCrypt;
 public class DBConnector {
     
     final static String SERVER  = "125.212.227.42";
-    final static String PORT    = "3336";
+    final static String PORT    = "3337";
     final static String DB_NAME = "TechnologyShopping-JavaWeb02";
     final static String DB_USER = "root";
     final static String DB_PASS = "toor";

@@ -16,11 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.MultipartConfigElement;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 /**
  *
  * @author chellong
  */
+@Configuration
 public class ItemModel implements IModel<Item> {
 
     private Connection conn;
@@ -44,6 +49,7 @@ public class ItemModel implements IModel<Item> {
         }
         return ItemModel.instance;
     }
+
 
     @Override
     public List<Item> getAll() throws Exception {

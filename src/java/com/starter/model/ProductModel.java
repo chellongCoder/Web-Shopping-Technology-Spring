@@ -44,6 +44,29 @@ public class ProductModel implements IModel<Product> {
         }
         return list;      
     }
+    
+     public int getCountPage() throws Exception {
+        String sql = "SELECT COUNT('*') as count FROM PRODUCT";
+        PreparedStatement statement = conn.prepareStatement(sql);
+        ResultSet rs = statement.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("count");
+        }
+        return 0;
+    }
+     public List<Product> getProductPerPage(int offset, int limit) throws Exception {
+        List<Product> list = new ArrayList<>();
+        String sql = "select * from PRODUCT limit ?,?";
+        PreparedStatement statement = conn.prepareStatement(sql);
+        statement.setInt(1, offset);
+        statement.setInt(2, limit);
+        ResultSet rs = statement.executeQuery();
+        while (rs.next()) {
+            Product product = new Product.ProductBuilder(rs.getInt("idProduct"), rs.getInt("idStore"), rs.getString("nameProduct")).build();
+            list.add(product);
+        }
+        return list;
+    }
 
     @Override
     public int add(Product t) throws Exception {

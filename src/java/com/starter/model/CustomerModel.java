@@ -11,6 +11,7 @@ import com.starter.db.DBConnector;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -20,7 +21,19 @@ import org.mindrot.jbcrypt.BCrypt;
  */
 public class CustomerModel implements IModel<Customer> {
     public static final int LOOP_HASH = 4;
+     private Connection conn;
+    private static CustomerModel instance;
     
+    private CustomerModel() throws Exception {
+        conn = DBConnector.getConnection();
+    }
+    
+    public static CustomerModel getInstance() throws Exception {
+        if(CustomerModel.instance == null) {
+            CustomerModel.instance = new CustomerModel();
+        }
+        return CustomerModel.instance;
+    }
     @Override
     public int add(Customer cus) throws Exception {
         
@@ -54,6 +67,38 @@ public class CustomerModel implements IModel<Customer> {
         }
         return null;
     }
+    
+     public int getCountPage() throws Exception {
+        String sql = "SELECT COUNT('*') as count FROM CUSTOMER";
+        PreparedStatement statement = conn.prepareStatement(sql);
+        ResultSet rs = statement.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("count");
+        }
+        return 0;
+    }
+     public List<Customer> getCustomerPerPage(int offset, int limit) throws Exception {
+        List<Customer> list = new ArrayList<>();
+        String sql = "select * from CUSTOMER limit ?,?";
+        PreparedStatement statement = conn.prepareStatement(sql);
+        statement.setInt(1, offset);
+        statement.setInt(2, limit);
+        ResultSet rs = statement.executeQuery();
+        while (rs.next()) {
+            Customer cus = new Customer.CustomerBuilder(rs.getString("email"), rs.getString("password"), rs.getString("name"))
+                    .setUsername(rs.getString("username"))
+                    .setAbout(rs.getString("about"))
+                    .setAddress(rs.getString("address"))
+                    .setCity(rs.getString("city"))
+                    .setIdCustomer(rs.getInt("idCustomer"))
+                    .setPostcode(rs.getInt("postcode"))
+                    .setTypeCustomer(rs.getString("typeCustomer"))
+                    .build();
+            list.add(cus);
+        }
+        return list;
+    }
+
     
     public static String hashPassword (String pass) {
         return BCrypt.hashpw(pass, BCrypt.gensalt(LOOP_HASH));

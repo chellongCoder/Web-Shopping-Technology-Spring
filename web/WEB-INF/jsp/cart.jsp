@@ -216,11 +216,11 @@
                             Subtotal  </p>
 
                         <div class="flex-m p-t-30">
-                            <a href="${pageContext.request.contextPath}/public/#" class="fs-18 color1 p-r-20 fa fa-facebook"></a>
-                            <a href="${pageContext.request.contextPath}/public/#" class="fs-18 color1 p-r-20 fa fa-instagram"></a>
-                            <a href="${pageContext.request.contextPath}/public/#" class="fs-18 color1 p-r-20 fa fa-pinterest-p"></a>
-                            <a href="${pageContext.request.contextPath}/public/#" class="fs-18 color1 p-r-20 fa fa-snapchat-ghost"></a>
-                            <a href="${pageContext.request.contextPath}/public/#" class="fs-18 color1 p-r-20 fa fa-youtube-play"></a>
+                            <a href="#" class="fs-18 color1 p-r-20 fa fa-facebook"></a>
+                            <a href="#" class="fs-18 color1 p-r-20 fa fa-instagram"></a>
+                            <a href="#" class="fs-18 color1 p-r-20 fa fa-pinterest-p"></a>
+                            <a href="#" class="fs-18 color1 p-r-20 fa fa-snapchat-ghost"></a>
+                            <a href="#" class="fs-18 color1 p-r-20 fa fa-youtube-play"></a>
                         </div>
                     </div>
                 </div>
@@ -296,25 +296,25 @@
 
                     <ul>
                         <li class="p-b-9">
-                            <a href="${pageContext.request.contextPath}/public/#" class="s-text7">
+                            <a href="#" class="s-text7">
                                 Track Order
                             </a>
                         </li>
 
                         <li class="p-b-9">
-                            <a href="${pageContext.request.contextPath}/public/#" class="s-text7">
+                            <a href="#" class="s-text7">
                                 Returns
                             </a>
                         </li>
 
                         <li class="p-b-9">
-                            <a href="${pageContext.request.contextPath}/public/#" class="s-text7">
+                            <a href="" class="s-text7">
                                 Shipping
                             </a>
                         </li>
 
                         <li class="p-b-9">
-                            <a href="${pageContext.request.contextPath}/public/#" class="s-text7">
+                            <a href="#" class="s-text7">
                                 FAQs
                             </a>
                         </li>

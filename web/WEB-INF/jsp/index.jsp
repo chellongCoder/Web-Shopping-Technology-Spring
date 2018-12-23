@@ -50,6 +50,7 @@
         }
     </style>
     <body class="animsition">
+       
         <c:if test="${LoginInfo == null}">
             <c:redirect url="login.htm"/>
         </c:if>
@@ -67,14 +68,14 @@
                         <li>
                             <a href="index.html">Home</a>
                             <ul class="sub_menu">
-                                <li><a href="index.html">Homepage V1</a></li>
-                                <li><a href="home-02.html">Homepage V2</a></li>
-                                <li><a href="home-03.html">Homepage V3</a></li>
+                                <li><a href="#">Homepage V1</a></li>
+                                <li><a href="#">Homepage V2</a></li>
+                                <li><a href="#">Homepage V3</a></li>
                             </ul>
                         </li>
 
                         <li>
-                            <a href="product.html">Shop</a>
+                            <a href="shopping.htm">Shop</a>
                         </li>
 
                         <li class="sale-noti">

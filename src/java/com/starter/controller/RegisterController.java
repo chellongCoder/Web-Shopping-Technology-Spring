@@ -30,7 +30,11 @@ public class RegisterController {
      */
     @RequestMapping("/register.htm")
     public String register() {
-        customerModel = new CustomerModel();
+        try {
+            customerModel = CustomerModel.getInstance();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         return "register";
     }
 

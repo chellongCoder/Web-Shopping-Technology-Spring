@@ -12,10 +12,9 @@ import java.util.List;
 /**
  *
  * @author chellong
+ * @param <T>
  */
 public interface IModel<T> {
-  
-    
     public List<T> getAll () throws Exception;
     public int add(T t) throws Exception;
     public int update(T c);

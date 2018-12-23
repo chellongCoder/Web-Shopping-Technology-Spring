@@ -43,6 +43,9 @@
         <!--===============================================================================================-->
     </head>
     <body class="animsition">
+        <c:if test="${LoginInfo == null}">
+            <c:redirect url="login.htm"/>
+        </c:if>
         <%@include file="partials/head.jsp" %>
         <!-- Title Page -->
         <section class="bg-title-page p-t-50 p-b-40 flex-col-c-m" style="background-image: url(${pageContext.request.contextPath}/public/images/itshirt.jpg);">
@@ -175,8 +178,8 @@
                             </div>
 
                             <div class="search-product pos-relative bo4 of-hidden">
-                                <input class="s-text7 size6 p-l-23 p-r-50" type="text" name="search-product" placeholder="Search Products...">
-
+                                <input class="s-text7 size6 p-l-23 p-r-50" type="text"  id="search-product" name="search-product" placeholder="Search Products...">
+                                <a hidden href="#" id="search" class="hidden">click</a>
                                 <button class="flex-c-m size5 ab-r-m color2 color0-hov trans-0-4">
                                     <i class="fs-12 fa fa-search" aria-hidden="true"></i>
                                 </button>
@@ -343,6 +346,13 @@
         <!--===============================================================================================-->
         <script type="text/javascript" src="${pageContext.request.contextPath}/public/vendor/select2/select2.min.js"></script>
         <script type="text/javascript">
+            var search = "";
+            var link = document.getElementById("search");
+            $('#search-product').on('input',function(e){
+                search = $("#search-product").val();
+                console.log("search ", search);
+                link.href = "shopping.htm";
+           });
             var items = {};
             function addItemToCart(sku)
             {
@@ -407,6 +417,8 @@
             $(".select-price").change(function () {
                 $("#products").submit();
             });
+            
+            
         </script>
         <!--===============================================================================================-->
         <script type="text/javascript" src="${pageContext.request.contextPath}/public/vendor/daterangepicker/moment.min.js"></script>

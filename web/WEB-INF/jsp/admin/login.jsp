@@ -72,7 +72,7 @@
                 <label class="checkbox">
                     <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> Remember me
                 </label>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>   
+                <a href="manager.htm" class="btn btn-lg btn-primary btn-block" type="submit">Login</a>   
             </form>
         </div> 
     </body>

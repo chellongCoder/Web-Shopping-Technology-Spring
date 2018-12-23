@@ -27,7 +27,7 @@ public class Item {
         this.status = builder.status;
         this.urlImage = builder.urlImage;
         this.note = builder.note;
-        this.name = builder.name;
+        this.name = builder.name;        
     }
 
     public String getName() {

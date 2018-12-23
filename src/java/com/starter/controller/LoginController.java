@@ -57,7 +57,7 @@ public class LoginController {
                 }
             }
         }
-        System.out.println("session " + session);
+        System.out.println("session ");
         if(check && session==null ) {
             Customer cus = CustomerModel.login(email, password);
             System.out.println("cus " + cus);
@@ -89,7 +89,7 @@ public class LoginController {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return "redirect:/index.htm";
+        return "redirect:/shopping.htm";
     }
     
     @RequestMapping(value = "adminLogin.htm")

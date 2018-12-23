@@ -54,6 +54,28 @@ public class StoreModel implements IModel<Store> {
         }
         return list;
     }
+     public int getCountPage() throws Exception {
+        String sql = "SELECT COUNT('*') as count FROM STORE";
+        PreparedStatement statement = conn.prepareStatement(sql);
+        ResultSet rs = statement.executeQuery();
+        if (rs.next()) {
+            return rs.getInt("count");
+        }
+        return 0;
+    }
+     public List<Store> getStorePerPage(int offset, int limit) throws Exception {
+        List<Store> list = new ArrayList<>();
+        String sql = "select * from STORE limit ?,?";
+        PreparedStatement statement = conn.prepareStatement(sql);
+        statement.setInt(1, offset);
+        statement.setInt(2, limit);
+        ResultSet rs = statement.executeQuery();
+        while (rs.next()) {
+            Store store = new Store.StoreBuilder(rs.getInt("idStore"), new Store.Type(rs.getString("type"))).build();
+            list.add(store);
+        }
+        return list;
+    }
 
     @Override
     public int add(Store t) throws Exception {

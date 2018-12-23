@@ -1341,9 +1341,40 @@
             margin-right: 0;
         }
     }
+    .wrap {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .button {
+        width: 140px;
+        height: 45px;
+        font-family: 'Roboto', sans-serif;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 2.5px;
+        font-weight: 500;
+        color: #2EE59D;
+        background-color: #fff;
+        border: none;
+        border-radius: 45px;
+        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease 0s;
+        cursor: pointer;
+        outline: none;
+    }
+
+    .button:hover {
+        background-color: #2EE59D;
+        box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+        color: #fff;
+        transform: translateY(-7px);
+    }
 
 </style>
-<nav class="navbar navbar-expand navbar-dark bg-primary"> <a href="#menu-toggle" id="menu-toggle" class="navbar-brand"><span
+<nav class="navbar navbar-expand navbar-dark bg-primary fixed-top"> <a href="#menu-toggle" id="menu-toggle" class="navbar-brand"><span
             class="navbar-toggler-icon"></span></a> <button class="navbar-toggler" type="button" data-toggle="collapse"
                                                     data-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span> </button>
@@ -1351,142 +1382,39 @@
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active"> <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item"> <a class="nav-link" href="#">Link</a> </li>
         </ul>
         <form class="form-inline my-2 my-md-0"> </form>
     </div>
+    <c:out value="${new}"/>
 </nav>
 <div id="wrapper" class="toggled">
     <!-- Sidebar -->
     <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
             <li class="sidebar-brand"> <a href="#"> Start Bootstrap </a> </li>
-            <li> <a href="#">User</a> </li>
-            <li> <a href="#">Store</a> </li>
-            <li> <a href="#">Product</a> </li>
-            <li> <a href="#">Item</a> </li>
-            <li> <a href="#">History</a> </li>
-
+            <li> <a href="manager.htm?choice=Customer">Customer</a> </li>
+            <li> <a href="manager.htm?choice=Store">Store</a> </li>
+            <li> <a href="manager.htm?choice=Product">Product</a> </li>
+            <li> <a href="manager.htm?choice=Item">Item</a> </li>
+            <li> <a href="manager.htm?choice=History">History</a> </li>
         </ul>
     </div> <!-- /#sidebar-wrapper -->
     <!-- Page Content -->
+
     <div id="page-content-wrapper">
-        <div class="container-fluid">
-
-            <div class="row">
-
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <table class="table lnr-text-align-left">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">First</th>
-                                <th scope="col">Last</th>
-                                <th scope="col">Handle</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                <td>
-                                    <a href="#" class="btn btn-danger">delete</a>
-                                    <a href="#" class="btn btn-info">update</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                                <td>
-                                    <a href="#" class="btn btn-danger">delete</a>
-                                    <a href="#" class="btn btn-info">update</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Larry</td>
-                                <td>the Bird</td>
-                                <td>@twitter</td>
-                                <td>
-                                    <a href="#" class="btn btn-danger">delete</a>
-                                    <a href="#" class="btn btn-info">update</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
-            <div>
-
-                <nav aria-label="...">
-                    <ul class="pagination">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1">Previous</a>
-                        </li>
-                        <c:forEach begin="1" end="${totalPages}" step="1">
-                            <c:choose>
-                                <c:when test="${i==currentPage}">
-                                    <li class="page-item active">
-                                        <a class="page-link" href="#">${i}<span class="sr-only">(current)</span></a>
-                                    </li>
-                                </c:when>    
-                                <c:otherwise>
-                                    <li class="page-item"><a class="page-link" href="manager.htm?">${i}</a></li>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:forEach>
-                        <li class="page-item">
-                            <a class="page-link" href="#">Next</a>
-                        </li>
-                    </ul>
-                </nav>Ï
-            </div>
-
-        </div>
-
+        <c:choose>
+        <c:when test="${new == null}">
+            <%@include file="main.jsp" %>
+        </c:when>
+        <c:when test="${new == 1}">
+            <%@include file="form.jsp" %>
+        </c:when>
+    </c:choose>
     </div> <!-- /#page-content-wrapper -->
 </div> <!-- /#wrapper -->
 <!-- Bootstrap core JavaScript -->
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.bundle.min.js"></script> <!-- Menu Toggle Script -->
-<script>
-    $(function () {
-        $("#menu-toggle").click(function (e) {
-            e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
-        });
 
-        $(window).resize(function (e) {
-            if ($(window).width() <= 768) {
-                $("#wrapper").removeClass("toggled");
-            } else {
-                $("#wrapper").addClass("toggled");
-            }
-        });
-
-
-        $("#mytable #checkall").click(function () {
-            if ($("#mytable #checkall").is(':checked')) {
-                $("#mytable input[type=checkbox]").each(function () {
-                    $(this).prop("checked", true);
-                });
-
-            } else {
-                $("#mytable input[type=checkbox]").each(function () {
-                    $(this).prop("checked", false);
-                });
-            }
-        });
-
-        $("[data-toggle=tooltip]").tooltip();
-
-    });
-</script>
 
 </html>

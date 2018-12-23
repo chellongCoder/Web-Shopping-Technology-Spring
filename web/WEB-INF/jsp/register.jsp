@@ -85,7 +85,7 @@
                             </div>
                             <div class="form-group m-b-0">
                                 <div class="col-sm-12 text-center">
-                                    <div>Already have an account? <a href="pages-login.html" class="text-info m-l-5"><b>Sign In</b></a></div>
+                                    <div>Already have an account? <a href="login.htm" class="text-info m-l-5"><b>Sign In</b></a></div>
                                 </div>
                             </div>
                         </form>
